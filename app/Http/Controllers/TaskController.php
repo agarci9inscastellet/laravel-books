@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Models\Department;
+use App\Models\Task;
+use Illuminate\Http\Request;
+
+class TaskController extends Controller
+{
+    public function index()
+    {
+        $tasks = Task::with('department')->get();
+        return view('tasks.index', compact('tasks'));
+    }
+
+    public function create()
+    {
+        $departments = Department::all();
+        return view('tasks.create', compact('departments'));
+    }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|min:5',
+            'description' => 'required'
+        ]);
+
+        Task::create($request->all());
+
+        return redirect()->route('tasks.index')
+            ->with('success', 'Nueva tarea creada correctamente');
+    }
+
+    public function edit(Task $task)
+    {
+        $departments = Department::all();
+        return view('tasks.edit', compact('task', 'departments'));
+    }
+
+    public function update(Request $request, Task $task)
+    {
+        $task->update($request->all());
+        return redirect()->route('tasks.index');
+    }
+
+    public function destroy(Task $task)
+    {
+        $task->delete();
+        return redirect()->route('tasks.index');
+    }
+}
