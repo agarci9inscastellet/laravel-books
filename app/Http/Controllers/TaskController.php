@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\Task;
+use App\Models\User;
+
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -18,6 +20,7 @@ class TaskController extends Controller
     public function create()
     {
         $departments = Department::all();
+        $users = User::all();
         return view('tasks.create', compact('departments'));
     }
     public function store(Request $request)
@@ -36,7 +39,8 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         $departments = Department::all();
-        return view('tasks.edit', compact('task', 'departments'));
+         $users = User::all();
+        return view('tasks.edit', compact('task', 'departments', 'users'));
     }
 
     public function update(Request $request, Task $task)

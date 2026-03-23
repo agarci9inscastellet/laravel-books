@@ -37,6 +37,7 @@
                     <th>Descripción</th>
                     <th>Department</th>
                     <th>Fecha</th>
+                    <th>Usuarios</th>
                     <th>Estado</th>
                     <th>Acción</th>
                 </tr>
@@ -62,7 +63,12 @@
                         {{ \Carbon\Carbon::parse($task->due_date)->format('d/m/Y') }}
                     </td>
 
+                    <td>
+                         @foreach ($task->users as $user)
+                            [{{ $user->name }}] /
+                        @endforeach
 
+                    </td>
                     
                     <td>
 

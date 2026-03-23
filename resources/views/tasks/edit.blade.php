@@ -100,6 +100,21 @@
         </div>
 
 
+
+
+        <!-- <div class="form-group">
+            <label for="department_id">Usuarios</label>
+            <select name="department_id" id="department_id" class="form-control">
+                <option value="">Select a user</option>
+                @foreach ($users as $user)
+                <option value="{{ $user->id }}" {{ old('user_id', $task->user_id) == $user->id ? 'selected' : '' }}>
+                    {{ $user->name }}
+                </option>
+                @endforeach
+            </select>
+        </div> -->
+
+
         <div class="col-md-6 mt-3">
 
             <label class="form-label"><strong>Estado:</strong></label>

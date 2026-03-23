@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Department;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +15,8 @@ class DepartmentSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('departments')->firstOrCreate([
+        Department::truncate();
+        DB::table('departments')->insert([
             [
                 'name' => 'Recursos Humanos',
                 'created_at' => Carbon::now(),

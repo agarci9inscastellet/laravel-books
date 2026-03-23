@@ -16,11 +16,7 @@ class TaskSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::factory()->create([
-            'name' => 'Jane Doe',
-            'email' => 'jane@example.com',
-            'password' => bcrypt('1234'), // Hash the password
-        ]);
+        $user = User::first();
 
         $departments = Department::all();
 
@@ -47,10 +43,19 @@ class TaskSeeder extends Seeder
                 'department_id' => $departments->random()->id,
             ]
         ];
+Task::truncate();
 
         foreach ($tasks as $taskData) {
             $task = Task::create($taskData);
-            $task->users()->attach($user->id);
+            //$task->users()->attach($user->id);
         }
+
+        
+        $task = Task::find(1);
+        $task->users()->attach($user->id);
+        $task = Task::find(2);
+        $task->users()->attach([1, 2]);
+        $task = Task::find(3);
+        $task->users()->attach(2);
     }
 }
