@@ -2,10 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Task;
 use App\Models\Department;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class TaskSeeder extends Seeder
@@ -15,17 +16,21 @@ class TaskSeeder extends Seeder
      */
     public function run(): void
     {
+        $user = User::factory()->create([
+            'name' => 'Jane Doe',
+            'email' => 'jane@example.com',
+            'password' => bcrypt('1234'), // Hash the password
+        ]);
+
         $departments = Department::all();
 
-        DB::table('tasks')->insert([
+        $tasks = [
             [
                 'title' => 'Revisar el código',
                 'description' => 'Revisar el código del nuevo módulo de autenticación.',
                 'due_date' => Carbon::now()->addDays(2),
                 'status' => 'Pendiente',
                 'department_id' => $departments->random()->id,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ],
             [
                 'title' => 'Escribir tests',
@@ -33,8 +38,6 @@ class TaskSeeder extends Seeder
                 'due_date' => Carbon::now()->addDays(5),
                 'status' => 'En progreso',
                 'department_id' => $departments->random()->id,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ],
             [
                 'title' => 'Desplegar a producción',
@@ -42,9 +45,12 @@ class TaskSeeder extends Seeder
                 'due_date' => Carbon::now()->addWeek(),
                 'status' => 'Completada',
                 'department_id' => $departments->random()->id,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
             ]
-        ]);
+        ];
+
+        foreach ($tasks as $taskData) {
+            $task = Task::create($taskData);
+            $task->users()->attach($user->id);
+        }
     }
 }

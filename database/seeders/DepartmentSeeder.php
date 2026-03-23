@@ -14,7 +14,7 @@ class DepartmentSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('departments')->insert([
+        DB::table('departments')->firstOrCreate([
             [
                 'name' => 'Recursos Humanos',
                 'created_at' => Carbon::now(),
