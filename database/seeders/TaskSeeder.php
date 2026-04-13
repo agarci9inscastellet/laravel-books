@@ -47,12 +47,11 @@ Task::truncate();
 
         foreach ($tasks as $taskData) {
             $task = Task::create($taskData);
-            //$task->users()->attach($user->id);
         }
 
         
         $task = Task::find(1);
-        $task->users()->attach($user->id);
+        $task->users()->attach(1);
         $task = Task::find(2);
         $task->users()->attach([1, 2]);
         $task = Task::find(3);

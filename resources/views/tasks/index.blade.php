@@ -65,7 +65,7 @@
 
                     <td>
                          @foreach ($task->users as $user)
-                            [{{ $user->name }}] /
+                            >>> [{{ $user->name }}] /
                         @endforeach
 
                     </td>

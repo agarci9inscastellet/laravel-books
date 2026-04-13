@@ -1,33 +1,30 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
-use App\Models\Department;
-use App\Http\Controllers\DepartmentController;
-use App\Models\Task;
+use Illuminate\Support\Facades\Route;
+use Laravel\Mcp\Server\Resource;
 
-Route::redirect('/', '/tasks');
+Route::get('/', function () {
+//$user = App\Models\User::find(1);$user->password = bcrypt('12345678');$user->save();
 
-Route::resource('tasks', TaskController::class);
 
-Route::resource('departments', DepartmentController::class);
+    return view('welcome');
+});
 
-Route::get("tasks/dept/{id}", function($id){
-    $department = Department::find($id);
-    $tasks = $department->tasks;
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// $tasks = Task::with('department')
-//              ->where('department_id', 2)
-//              ->get();
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    echo "<h1>Department: " . $department->name . "</h1><br>";
-    echo "Tasks:<br>";
-    foreach ($tasks as $task) {
-    echo "Title: " . $task->title . "<br>";
-    echo "Date: " . $task->due_date . "<br>";
-    echo "Status: " . $task->status . "<br>------------------------<br>";
-}
-    return "TEEEST" ;
+    Route::resource('tasks', TaskController::class);
 });
 
 
+
+
+require __DIR__.'/auth.php';
