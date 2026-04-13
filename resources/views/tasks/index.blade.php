@@ -8,9 +8,11 @@
 
         <h2>CRUD de Tareas</h2>
 
+        @can('access-admin')
         <a href="{{ route('tasks.create') }}" class="btn btn-primary">
             Crear tarea
         </a>
+        @endcan
 
     </div>
 
@@ -48,6 +50,7 @@
 
                 @foreach ($tasks as $task)
 
+                {{--  @canany(['owner-of-task', 'access-admin'], $task) --}}
                 <tr>
 
                     <td class="fw-bold">
@@ -57,19 +60,19 @@
                     <td>
                         {{ $task->description }}
                     </td>
-                <td>{{ $task->department?->name ?? 'N/A' }}</td>
+                    <td>{{ $task->department?->name ?? 'N/A' }}</td>
 
                     <td>
                         {{ \Carbon\Carbon::parse($task->due_date)->format('d/m/Y') }}
                     </td>
 
                     <td>
-                         @foreach ($task->users as $user)
-                            >>> [{{ $user->name }}] /
+                        @foreach ($task->users as $user)
+                        >>> [{{ $user->name }}] /
                         @endforeach
 
                     </td>
-                    
+
                     <td>
 
                         @if($task->status == 'Pendiente')
@@ -92,10 +95,12 @@
 
                     <td>
 
+                        @canany(['owner-of-task', 'access-admin'], $task)
                         <a href="{{ route('tasks.edit',$task->id) }}" class="btn btn-warning">
                             Editar
                         </a>
-
+                        @endcanany
+                        @canany(['owner-alone', 'access-admin'], $task)
                         <form action="{{ route('tasks.destroy',$task->id) }}" method="POST" class="d-inline">
 
                             @csrf
@@ -106,10 +111,11 @@
                             </button>
 
                         </form>
-
+                        @endcanany
                     </td>
 
                 </tr>
+                {{-- @endcanany --}}
 
                 @endforeach
 
@@ -122,4 +128,3 @@
 </div>
 
 @endsection
-

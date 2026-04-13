@@ -1,16 +1,20 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Mcp\Server\Resource;
 
 Route::get('/', function () {
-//$user = App\Models\User::find(1);$user->password = bcrypt('12345678');$user->save();
+    //$user = App\Models\User::find(1);$user->password = bcrypt('12345678');$user->save();
 
 
     return view('welcome');
 });
+
+Route::get('/restricted', [TaskController::class, 'restricted'])->name('restricted');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -20,11 +24,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::resource('tasks', TaskController::class);
 });
 
+Route::resource('tasks', TaskController::class);
 
 
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

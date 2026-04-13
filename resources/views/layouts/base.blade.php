@@ -10,6 +10,9 @@
     <title>CRUD laravel 10</title>
 </head>
 <body class="bg-dark text-white">
+    <nav class="p-3">
+        <a href="{{ url('/') }}" class="text-white text-decoration-none">Inicio</a>
+    </nav>
     <div class="container">
         @yield('content')
     </div>

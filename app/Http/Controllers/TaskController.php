@@ -8,9 +8,20 @@ use App\Models\Task;
 use App\Models\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
+
+    public function restricted(Request $request): string
+    {
+        
+        if (Gate::allows('access-admin')) {
+            return "YOU ARE IN A RESTRICTED AREA! (only admin)";
+        }
+        abort(403, 'Unauthorized!');
+    }
+
     public function index()
     {
         $tasks = Task::with('department')->get();
