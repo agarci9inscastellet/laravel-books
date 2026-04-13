@@ -15,7 +15,7 @@ class TaskController extends Controller
 
     public function restricted(Request $request): string
     {
-        
+
         if (Gate::allows('access-admin')) {
             return "YOU ARE IN A RESTRICTED AREA! (only admin)";
         }
@@ -50,7 +50,7 @@ class TaskController extends Controller
     public function edit(Task $task)
     {
         $departments = Department::all();
-         $users = User::all();
+        $users = User::all();
         return view('tasks.edit', compact('task', 'departments', 'users'));
     }
 
